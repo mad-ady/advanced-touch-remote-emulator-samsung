@@ -60,22 +60,24 @@ int main(int argc, char *argv[]) {
 	printf("To dump events on this device, run the command:"
 	       "\nevtest \"%s\"\n\n",  uinput_get_event_path(tkn));
 
-	printf("Send some events in 10 seconds.\n");
-	sleep(10);
+	printf("Sending an infinite stream of events one second apart.\n");
+	sleep(2);
 
 	/* Simulate some events */
 	int number_of_events = sizeof(events)/sizeof(struct input_event);
 	//fprintf(stderr, "Debug: number_of_events: %d", number_of_events); 
 	// sleep 300ms to allow the keyboard to register
         
-	printf("Sending ChUp\n");
-	usleep(300000);
-	// send the actual events
-	err = uinput_send_events(tkn, events, number_of_events, 1);
-	if (err) {
-		fprintf(stderr, "Cannot inject event uinput device\n");
-	}
-
+        while(1){
+        
+                printf("Sending ChUp\n");
+                // send the actual events
+                err = uinput_send_events(tkn, events, number_of_events, 1);
+                if (err) {
+                        fprintf(stderr, "Cannot inject event uinput device\n");
+                }
+                sleep(1);
+        }
 	uinput_close(tkn);
 	return 0;
 }
